@@ -8,6 +8,8 @@ public:
 	void exit();
 	void render();
 
+	unsigned int getShaderProgram() { return mShaderProgram; }
+
 private:
 	int mVertexShader;
 	int mFragmentShader;
@@ -22,7 +24,7 @@ private:
 	bool compileShader(int shader);
 	bool linkProgram(int program);
 
-	std::string* readFile(std::string path);
+	std::string& readFile(std::string path);
 
 };
 

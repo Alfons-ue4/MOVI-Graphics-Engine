@@ -7,7 +7,9 @@ public:
 	void init() {}
 	void exit() {}
 
-	void render();
+	void render(int p, int v);
+
+	void setBackgroundColor(float r, float g, float b);
 
 };
 

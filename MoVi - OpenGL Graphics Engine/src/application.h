@@ -28,10 +28,10 @@ private:
 	MVBufferManager mBufferManager;
 
 
-	float mVertices[9] = {
-	-0.5f, -0.5f, 0.0f,
-	 0.5f, -0.5f, 0.0f,
-	 0.0f,  0.5f, 0.0f
+	float mVertices[6] = {
+	-0.5f, -0.5f,
+	 0.5f, -0.5f,
+	 0.0f,  0.5f
 	};
 
 };

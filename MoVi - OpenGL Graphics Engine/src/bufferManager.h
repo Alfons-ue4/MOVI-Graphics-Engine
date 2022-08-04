@@ -5,14 +5,13 @@
 class MVBufferManager
 {
 public:
-	void init();
+	void init(float vertices[]);
 	void exit();
-	void bind(float bufferData[]);
-	void unBind();
+	void unbind();
 
 private:
 	unsigned int mVertexBuffer;
-	void createVertexBuffer();
+	void createVertexBuffer(float vertices[]);
 	void destroyVertexBuffer();
 
 };

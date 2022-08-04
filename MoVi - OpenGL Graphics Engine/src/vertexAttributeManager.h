@@ -6,15 +6,17 @@ class MVVertexAttributeManager
 public:
 	void init();
 	void exit();
-	void enable();
-	void bind();
-	void unBind();
-	void render();
+
+	void unbind();
+
+	void setLayout();
+
+	unsigned int getVertexArray() { return mVertexArray; }
+
 
 private:
 	void createVertexArray();
 	
-
 	unsigned int mVertexArray;
 
 };

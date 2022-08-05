@@ -1,8 +1,10 @@
 #include "bufferManager.h"
 
-void MVBufferManager::init(float vertices[])
+void MVBufferManager::init(unsigned int indices[], float vertices[], int size, int sizeI)
 {
-	createVertexBuffer(vertices);
+	createVertexBuffer(vertices, size);
+	createElementBuffer(indices, sizeI);
+
 }
 
 void MVBufferManager::exit()
@@ -15,14 +17,22 @@ void MVBufferManager::unbind()
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void MVBufferManager::createVertexBuffer(float vertices[])
+void MVBufferManager::createVertexBuffer(float vertices[], int size)
 {
 	glGenBuffers(1, &mVertexBuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, mVertexBuffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, size * sizeof(float), vertices, GL_STATIC_DRAW);
 }
 
 void MVBufferManager::destroyVertexBuffer()
 {
 	glDeleteBuffers(1, &mVertexBuffer);
+}
+
+void MVBufferManager::createElementBuffer(unsigned int indices[], int sizeI)
+{
+	glGenBuffers(1, &mElementBuffer);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mElementBuffer);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeI * sizeof(int), indices, GL_STATIC_DRAW);
 }

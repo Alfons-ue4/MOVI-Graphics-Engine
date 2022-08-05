@@ -27,7 +27,7 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="thirdparty\glad.c" />
     <ClCompile Include="src\window.cpp" />
-    <ClCompile Include="src\vertexAttributeManager.cpp" />
+    <ClCompile Include="src\vertexArray.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\shaderManager.h" />
@@ -39,7 +39,7 @@
     <ClInclude Include="src\log.h" />
     <ClInclude Include="src\logger.h" />
     <ClInclude Include="src\window.h" />
-    <ClInclude Include="src\vertexAttributeManager.h" />
+    <ClInclude Include="src\vertexArray.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\shaders\fragmentShader.frag" />

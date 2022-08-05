@@ -8,8 +8,6 @@ void MVShaderManager::init(std::string vertexShaderPath, std::string fragmentSha
 	createShaderProgram();
 
 	deleteShaders();
-
-	glUseProgram(mShaderProgram);
 }
 
 void MVShaderManager::exit()
@@ -30,14 +28,12 @@ void MVShaderManager::createVertexShader(std::string vertexShaderPath)
 	const char* vertexShaderCode = readFile(vertexShaderPath).c_str();
 
 	mVertexShader = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(mVertexShader, 1, &vertexShaderCode, nullptr);
+	glShaderSource(mVertexShader, 1, &vertexShaderCode, NULL);
 
 	if (!compileShader(mVertexShader))
 	{
 		LERROR("Failed to compile shader!")
 	}
-
-
 }
 
 void MVShaderManager::createFragmentShader(std::string fragmentShaderPath)
@@ -45,7 +41,7 @@ void MVShaderManager::createFragmentShader(std::string fragmentShaderPath)
 	const char* fragmentShaderSource = readFile(fragmentShaderPath).c_str();
 
 	mFragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(mFragmentShader, 1, &fragmentShaderSource, nullptr);
+	glShaderSource(mFragmentShader, 1, &fragmentShaderSource, NULL);
 
 	if (!compileShader(mFragmentShader))
 	{

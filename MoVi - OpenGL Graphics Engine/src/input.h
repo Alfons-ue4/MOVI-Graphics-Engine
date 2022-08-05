@@ -8,5 +8,10 @@ public:
 	void exit() {}
 
 	int getKeyPress(GLFWwindow* window);
+private:
+	void keyHandle(int key);
+
+	bool mPressingKey = false;
+	int pressedKey;
 };
 

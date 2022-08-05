@@ -5,7 +5,7 @@
 #include "renderer.h"
 #include "shaderManager.h"
 #include "bufferManager.h"
-#include "vertexAttributeManager.h"
+#include "vertexArray.h"
 
 class MVApplication
 {
@@ -16,6 +16,25 @@ public:
 	const unsigned int srcHeight = 400;
 
 private:
+
+	void handleInput();
+	int mPolygonMode = GL_FILL;
+
+	std::string mTitle = "MoVi - Graphics Engine";
+
+	float mVertices[3*4] = {
+		 0.5f,  0.5f, 0.0f, 
+		 0.5f, -0.5f, 0.0f,
+		-0.5f, -0.5f, 0.0f,  
+		-0.5f,  0.5f, 0.0f
+
+	};
+
+	unsigned int mIndices[2 * 3] = { 
+			0, 1, 3,   
+			1, 2, 3
+	};
+
 	bool mRunning = true;
 
 	void loadGLAD();
@@ -24,15 +43,8 @@ private:
 	MVInput mInput;
 	MVRenderer mRenderer;
 	MVShaderManager mShaderManager;
-	MVVertexAttributeManager mVertexAttributeManager;
+	MVVertexArray mVertexArray;
 	MVBufferManager mBufferManager;
-
-
-	float mVertices[6] = {
-	-0.5f, -0.5f,
-	 0.5f, -0.5f,
-	 0.0f,  0.5f
-	};
 
 };
 

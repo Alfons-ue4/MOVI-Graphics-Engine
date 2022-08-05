@@ -39,7 +39,7 @@
     <ClCompile Include="src\shaderManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\vertexAttributeManager.cpp">
+    <ClCompile Include="src\vertexArray.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -71,7 +71,7 @@
     <ClInclude Include="src\shaderManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\vertexAttributeManager.h">
+    <ClInclude Include="src\vertexArray.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

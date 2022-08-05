@@ -11,10 +11,14 @@ void frameBufferSizeCallback(GLFWwindow* window, int width, int height)
 void MVWindow::init(uint32_t width, uint32_t height, std::string title)
 {
 	glfwInit();
-	glfwWindowHint(GLFW_SAMPLES, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+#ifdef __APPLE__
+	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+#endif
+
 
 	mWindow = glfwCreateWindow(width, height, title.c_str(), NULL, NULL);
 
@@ -23,10 +27,9 @@ void MVWindow::init(uint32_t width, uint32_t height, std::string title)
 		LERROR("Failed to create window!")
 		glfwTerminate();
 	}
+
 	glfwMakeContextCurrent(mWindow);
-
 	glfwSetFramebufferSizeCallback(mWindow, frameBufferSizeCallback);
-
 }
 
 void MVWindow::exit()

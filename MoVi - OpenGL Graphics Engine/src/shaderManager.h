@@ -11,8 +11,8 @@ public:
 	unsigned int getShaderProgram() { return mShaderProgram; }
 
 private:
-	int mVertexShader;
-	int mFragmentShader;
+	unsigned int mVertexShader;
+	unsigned int mFragmentShader;
 	unsigned int mShaderProgram;
 
 	void createVertexShader(std::string vertexShaderPath);

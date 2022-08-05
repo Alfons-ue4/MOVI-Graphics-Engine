@@ -5,45 +5,52 @@ void MVApplication::run()
 	LINFO("Engine starting")
 
 	//initializing stuff
-	mWindow.init(srcWidth, srcHeight, "Test Title");
+	mWindow.init(srcWidth, srcHeight, mTitle);
 
 	loadGLAD();
 
-	mVertexAttributeManager.init();
-	mBufferManager.init(mVertices);
-	mVertexAttributeManager.setLayout();
-	mBufferManager.unbind();
-	mVertexAttributeManager.unbind();
+	mShaderManager.init("src/shaders/vertexShader.vert", "src/shaders/fragmentShader.frag");
 
-	mShaderManager.init("shaders/vertexShader.vert", "shaders/fragmentShader.frag");
+	mVertexArray.init();
+	mBufferManager.init(mIndices, mVertices, 12 /* sizeof(mVertices) / sizeof(mVertices[0]) */ , 6/*sizeof(mIndices) / sizeof(mIndices[0]) */ );
+	mVertexArray.setAttrib();
 
-	mRenderer.setBackgroundColor(1.0f, 0.0f, 0.0f);
+	mRenderer.setBackgroundColor(0.2f, 0.2f, 0.2f);
 
 	while (!mWindow.shouldClose() && mRunning)
 	{
-		//input handle
-		//--------------------------------------------------------
-		//switch (mInput.getKeyPress(mWindow.getWindow()))
-		//{
-		//case GLFW_KEY_ESCAPE:
-		//	LINFO("Escape key pressed")
-		//		mRunning = false;
-		//}
-		//--------------------------------------------------------
-
-		mRenderer.render(mShaderManager.getShaderProgram(), mVertexAttributeManager.getVertexArray());
-
+		handleInput();
+		mRenderer.render(mShaderManager.getShaderProgram(), mVertexArray.getVertexArray());
 		mWindow.update();
 	}
 
 	//exiting stuff
-	mVertexAttributeManager.exit();
+	mVertexArray.exit();
 	mBufferManager.exit();
 	mShaderManager.exit();
 	mWindow.exit();
 
 	LINFO("Engine closing")
 
+}
+
+void MVApplication::handleInput()
+{
+	if (glfwGetKey(mWindow.getWindow(), GLFW_KEY_ESCAPE) == GLFW_PRESS)
+	{
+		mRunning = false;
+		LINFO("Engine closing")
+	}
+	if (glfwGetKey(mWindow.getWindow(), GLFW_KEY_F2) == GLFW_PRESS)
+	{
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		mPolygonMode = GL_LINE;
+	}
+	if (glfwGetKey(mWindow.getWindow(), GLFW_KEY_F1) == GLFW_PRESS)
+	{
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		mPolygonMode = GL_FILL;
+	}
 }
 
 void MVApplication::loadGLAD()

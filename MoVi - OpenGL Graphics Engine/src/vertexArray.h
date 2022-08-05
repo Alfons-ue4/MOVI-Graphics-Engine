@@ -7,6 +7,8 @@ public:
 	void init();
 	void exit();
 
+	void render();
+
 	void unbind();
 
 	void setAttrib();

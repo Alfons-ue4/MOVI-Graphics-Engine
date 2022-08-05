@@ -7,7 +7,7 @@ public:
 	void init() {}
 	void exit() {}
 
-	void render(int p, int v);
+	void render(unsigned int v);
 
 	void setBackgroundColor(float r, float g, float b);
 

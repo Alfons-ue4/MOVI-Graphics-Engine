@@ -15,11 +15,6 @@ void MVWindow::init(uint32_t width, uint32_t height, std::string title)
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-#ifdef __APPLE__
-	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-#endif
-
-
 	mWindow = glfwCreateWindow(width, height, title.c_str(), NULL, NULL);
 
 	if (mWindow == NULL)

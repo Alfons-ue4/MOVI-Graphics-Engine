@@ -6,6 +6,7 @@
 #include "shaderManager.h"
 #include "bufferManager.h"
 #include "vertexArray.h"
+#include "gui.h"
 
 class MVApplication
 {
@@ -22,15 +23,14 @@ private:
 
 	std::string mTitle = "MoVi - Graphics Engine";
 
-	float mVertices[3*4] = {
-		 0.5f,  0.5f, 0.0f, 
-		 0.5f, -0.5f, 0.0f,
-		-0.5f, -0.5f, 0.0f,  
-		-0.5f,  0.5f, 0.0f
-
+	float mVertices[6*4] = {
+		 0.5f, -0.5f, 0.0f,		1.0f, 0.0f, 0.0f,
+		-0.5f, -0.5f, 0.0f,		0.0f, 1.0f, 0.0f,
+		-0.5f,  0.5f, 0.0f,		0.0f, 0.0f, 1.0f,
+		 0.5f,  0.5f, 0.0f,		1.0f, 1.0f, 0.0f
 	};
 
-	unsigned int mIndices[2 * 3] = { 
+	unsigned int mIndices[6] = { 
 			0, 1, 3,   
 			1, 2, 3
 	};
@@ -45,6 +45,6 @@ private:
 	MVShaderManager mShaderManager;
 	MVVertexArray mVertexArray;
 	MVBufferManager mBufferManager;
-
+	MVGui mImgui;
 };
 

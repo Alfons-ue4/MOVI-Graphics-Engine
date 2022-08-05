@@ -1,7 +1,5 @@
 #include "input.h"
 
-
-
 int MVInput::getKeyPress(GLFWwindow* window)
 {
 	if (!mPressingKey)

@@ -1,5 +1,6 @@
 #include "application.h"
 
+
 void MVApplication::run()
 {
 	LINFO("Engine starting")
@@ -12,15 +13,26 @@ void MVApplication::run()
 	mShaderManager.init("src/shaders/vertexShader.vert", "src/shaders/fragmentShader.frag");
 
 	mVertexArray.init();
-	mBufferManager.init(mIndices, mVertices, 12 /* sizeof(mVertices) / sizeof(mVertices[0]) */ , 6/*sizeof(mIndices) / sizeof(mIndices[0]) */ );
+	mBufferManager.init(mIndices, mVertices, 6*4 /* sizeof(mVertices) / sizeof(mVertices[0]) */ , 6/*sizeof(mIndices) / sizeof(mIndices[0]) */ );
 	mVertexArray.setAttrib();
+	mImgui.init(mWindow.getWindow());
 
 	mRenderer.setBackgroundColor(0.2f, 0.2f, 0.2f);
 
 	while (!mWindow.shouldClose() && mRunning)
 	{
 		handleInput();
-		mRenderer.render(mShaderManager.getShaderProgram(), mVertexArray.getVertexArray());
+		
+		glClear(GL_COLOR_BUFFER_BIT);
+
+		mImgui.render();
+
+		mShaderManager.render();
+		mVertexArray.render();
+		mRenderer.render(mVertexArray.getVertexArray());
+
+		mImgui.createWindows();
+		
 		mWindow.update();
 	}
 
@@ -29,6 +41,7 @@ void MVApplication::run()
 	mBufferManager.exit();
 	mShaderManager.exit();
 	mWindow.exit();
+	mImgui.exit();
 
 	LINFO("Engine closing")
 

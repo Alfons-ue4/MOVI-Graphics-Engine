@@ -1,13 +1,12 @@
 #include "shaderManager.h"
 
-void MVShaderManager::init(std::string vertexShaderPath, std::string fragmentShaderPath)
+void MVShaderManager::init(const char* vertexShaderPath, const char* fragmentShaderPath)
 {
 	createVertexShader(vertexShaderPath);
 	createFragmentShader(fragmentShaderPath);
 	
 	createShaderProgram();
 
-	deleteShaders();
 }
 
 void MVShaderManager::exit()
@@ -15,17 +14,28 @@ void MVShaderManager::exit()
 	glDeleteProgram(mShaderProgram);
 }
 
-std::string& MVShaderManager::readFile(std::string path)
+void MVShaderManager::render()
 {
-	std::ifstream ifs(path);
-	std::string content((std::istreambuf_iterator<char>(ifs)), (std::istreambuf_iterator<char>()));
-
-	return content;
+	glUseProgram(mShaderProgram);
 }
 
-void MVShaderManager::createVertexShader(std::string vertexShaderPath)
+std::string MVShaderManager::readFile(const char* path)
 {
-	const char* vertexShaderCode = readFile(vertexShaderPath).c_str();
+	std::ifstream ifs(path);
+	if (!ifs.good())
+	{
+		LERROR("Failed to load file" + std::string (path))
+	}
+
+	return std::string(
+		std::istreambuf_iterator<char>(ifs), 
+		std::istreambuf_iterator<char>());
+}
+
+void MVShaderManager::createVertexShader(const char* vertexShaderPath)
+{
+	std::string temp = readFile(vertexShaderPath);
+	const char* vertexShaderCode = temp.c_str();
 
 	mVertexShader = glCreateShader(GL_VERTEX_SHADER);
 	glShaderSource(mVertexShader, 1, &vertexShaderCode, NULL);
@@ -36,17 +46,20 @@ void MVShaderManager::createVertexShader(std::string vertexShaderPath)
 	}
 }
 
-void MVShaderManager::createFragmentShader(std::string fragmentShaderPath)
+void MVShaderManager::createFragmentShader(const char* fragmentShaderPath)
 {
-	const char* fragmentShaderSource = readFile(fragmentShaderPath).c_str();
+	std::string temp = readFile(fragmentShaderPath);
+	const char* fragmentShaderCode = temp.c_str();
 
 	mFragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(mFragmentShader, 1, &fragmentShaderSource, NULL);
+	glShaderSource(mFragmentShader, 1, &fragmentShaderCode, NULL);
 
 	if (!compileShader(mFragmentShader))
 	{
 		LERROR("Failed to compile shader!")
 	}
+
+	
 }
 
 void MVShaderManager::createShaderProgram()
@@ -55,14 +68,12 @@ void MVShaderManager::createShaderProgram()
 	glAttachShader(mShaderProgram, mVertexShader);
 	glAttachShader(mShaderProgram, mFragmentShader);
 
-	linkProgram(mShaderProgram);
+	if (!linkProgram(mShaderProgram))
+	{
+		LERROR("Failed to link program!");
+	}
 
 	deleteShaders();
-}
-
-void MVShaderManager::render()
-{
-	glUseProgram(mShaderProgram);
 }
 
 void MVShaderManager::deleteShaders()
@@ -83,7 +94,23 @@ bool MVShaderManager::linkProgram(int program)
 {
 	int success;
 	glLinkProgram(program);
-	glGetProgramiv(program, GL_LINK_STATUS, &success);
+	glGetShaderiv(program, GL_LINK_STATUS, &success);
 	glValidateProgram(mShaderProgram);
 	return success;
+}
+
+void MVShaderManager::setFloat(const std::string& name, float value)
+{
+	glUniform1f(glGetUniformLocation(mShaderProgram, name.c_str()), value);
+}
+
+void MVShaderManager::setInt(const std::string& name, int value)
+{
+	glUniform1i(glGetUniformLocation(mShaderProgram, name.c_str()), value);
+}
+
+
+void MVShaderManager::setBool(const std::string& name, bool value) 
+{
+	glUniform1i(glGetUniformLocation(mShaderProgram, name.c_str()), (int)value);
 }

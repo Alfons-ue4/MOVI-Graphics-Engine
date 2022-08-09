@@ -1,12 +1,19 @@
 #include "window.h"
 
+float mouseXpos;
+float mouseYpos;
+
+void mouseCallback(GLFWwindow* window, double xpos, double ypos)
+{
+	mouseXpos = static_cast<float> (xpos);
+	mouseYpos = static_cast<float> (ypos);
+}
+
 //had to be implimented here :/
 void frameBufferSizeCallback(GLFWwindow* window, int width, int height)
 {
 	glViewport(0, 0, width, height);
 }
-
-
 
 void MVWindow::init(uint32_t width, uint32_t height, std::string title)
 {
@@ -25,6 +32,7 @@ void MVWindow::init(uint32_t width, uint32_t height, std::string title)
 
 	glfwMakeContextCurrent(mWindow);
 	glfwSetFramebufferSizeCallback(mWindow, frameBufferSizeCallback);
+	glfwSetCursorPosCallback(mWindow, mouseCallback);
 }
 
 void MVWindow::exit()
@@ -42,6 +50,13 @@ void MVWindow::update()
 bool MVWindow::shouldClose()
 {
 	return glfwWindowShouldClose(mWindow);
+}
+
+mouseXY MVWindow::getMouseXY()
+{
+	mXY.xposition = mouseXpos;
+	mXY.yposition = mouseYpos;
+	return mouseXY(mXY);
 }
 
 GLFWwindow* MVWindow::getWindow()

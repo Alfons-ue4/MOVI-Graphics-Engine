@@ -7,6 +7,8 @@
 #include "bufferManager.h"
 #include "vertexArray.h"
 #include "gui.h"
+#include "textureManager.h"
+#include "camera.h"
 
 class MVApplication
 {
@@ -17,22 +19,63 @@ public:
 	const unsigned int srcHeight = 400;
 
 private:
+	glm::mat4 model;
+	glm::mat4 view;
+	glm::mat4 projection;
 
+	void newFrame();
+	float mDeltaTime = 0.0f;
+	float mLastFrame = 0.0f;
+	float mCurrentFrame;
+
+	void mouseInput();
 	void handleInput();
 	int mPolygonMode = GL_FILL;
 
 	std::string mTitle = "MoVi - Graphics Engine";
 
-	float mVertices[6*4] = {
-		 0.5f, -0.5f, 0.0f,		1.0f, 0.0f, 0.0f,
-		-0.5f, -0.5f, 0.0f,		0.0f, 1.0f, 0.0f,
-		-0.5f,  0.5f, 0.0f,		0.0f, 0.0f, 1.0f,
-		 0.5f,  0.5f, 0.0f,		1.0f, 1.0f, 0.0f
-	};
+	float mVertices[5*36] = {
+	-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+	 0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
+	 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+	 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+	-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+	-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
 
-	unsigned int mIndices[6] = { 
-			0, 1, 3,   
-			1, 2, 3
+	-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+	 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+	 0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+	 0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+	-0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
+	-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+
+	-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+	-0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+	-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+	-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+	-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+	-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+	 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+	 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+	 0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+	 0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+	 0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+	 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+	-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+	 0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
+	 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+	 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+	-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+	-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+
+	-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+	 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+	 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+	 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+	-0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
+	-0.5f,  0.5f, -0.5f,  0.0f, 1.0f
 	};
 
 	bool mRunning = true;
@@ -45,6 +88,9 @@ private:
 	MVShaderManager mShaderManager;
 	MVVertexArray mVertexArray;
 	MVBufferManager mBufferManager;
-	MVGui mImgui;
+	MVGui mGui;
+	MVTextureManager mTextureManager;
+	MVCamera mCamera;
+
 };
 

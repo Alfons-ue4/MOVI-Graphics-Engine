@@ -10,29 +10,57 @@ void MVApplication::run()
 
 	loadGLAD();
 
+	glEnable(GL_DEPTH_TEST);
+
 	mShaderManager.init("src/shaders/vertexShader.vert", "src/shaders/fragmentShader.frag");
-
+	mCamera.init();
 	mVertexArray.init();
-	mBufferManager.init(mIndices, mVertices, 6*4 /* sizeof(mVertices) / sizeof(mVertices[0]) */ , 6/*sizeof(mIndices) / sizeof(mIndices[0]) */ );
+	mBufferManager.init(mVertices, sizeof(mVertices) / sizeof(mVertices[0]));
 	mVertexArray.setAttrib();
-	mImgui.init(mWindow.getWindow());
-
+	mInput.init(mWindow, srcWidth, srcHeight, 0.1f);
+	mGui.init(mWindow.getWindow());
+	
 	mRenderer.setBackgroundColor(0.2f, 0.2f, 0.2f);
+
+	mShaderManager.render(); //has to render once in order for it to find the uniform
+	int tex = mTextureManager.loadTexture("../resources/test.png");
+	mShaderManager.setInt("texture1", 0);
 
 	while (!mWindow.shouldClose() && mRunning)
 	{
-		handleInput();
-		
-		glClear(GL_COLOR_BUFFER_BIT);
+		newFrame();
 
-		mImgui.render();
+		mCamera.update(mDeltaTime);
+
+		mInput.processInput(mRunning, mPolygonMode, mCamera, mGui.wantMouse());
+		
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		mGui.render();
 
 		mShaderManager.render();
+		mTextureManager.render(tex);
 		mVertexArray.render();
+
+		glm::mat4 model = glm::mat4(1.0f);
+		mShaderManager.setMat4("modelTransform", model);
+
+		glm::mat4 projection = glm::perspective(glm::radians(mCamera.getFov()), (float)srcWidth / (float)srcHeight, 0.1f, 100.0f);
+		mShaderManager.setMat4("projection", projection);
+
+		glm::mat4 view = mCamera.view();
+		mShaderManager.setMat4("view", view);
+
+
 		mRenderer.render(mVertexArray.getVertexArray());
 
-		mImgui.createWindows();
-		
+		//gui
+		mGui.createWindows();
+		mRenderer.setBackgroundColor(mGui.bgColor[0], mGui.bgColor[1], mGui.bgColor[2]);
+		mCamera.setCameraSpeed(mGui.cameraSpeed * 0.5);
+		mInput.setSensitivity(mGui.sensitivity*0.01f);
+		mCamera.setFov(mGui.cameraFov);
+
 		mWindow.update();
 	}
 
@@ -41,29 +69,17 @@ void MVApplication::run()
 	mBufferManager.exit();
 	mShaderManager.exit();
 	mWindow.exit();
-	mImgui.exit();
+	mGui.exit();
 
 	LINFO("Engine closing")
 
 }
 
-void MVApplication::handleInput()
+void MVApplication::newFrame()
 {
-	if (glfwGetKey(mWindow.getWindow(), GLFW_KEY_ESCAPE) == GLFW_PRESS)
-	{
-		mRunning = false;
-		LINFO("Engine closing")
-	}
-	if (glfwGetKey(mWindow.getWindow(), GLFW_KEY_F2) == GLFW_PRESS)
-	{
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-		mPolygonMode = GL_LINE;
-	}
-	if (glfwGetKey(mWindow.getWindow(), GLFW_KEY_F1) == GLFW_PRESS)
-	{
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-		mPolygonMode = GL_FILL;
-	}
+	mCurrentFrame = static_cast<float>(glfwGetTime());
+	mDeltaTime = mCurrentFrame - mLastFrame;
+	mLastFrame = mCurrentFrame;
 }
 
 void MVApplication::loadGLAD()

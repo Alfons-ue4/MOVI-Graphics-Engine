@@ -1,9 +1,8 @@
 #include "bufferManager.h"
 
-void MVBufferManager::init(unsigned int indices[], float vertices[], int size, int sizeI)
+void MVBufferManager::init(float vertices[], int size)
 {
 	createVertexBuffer(vertices, size);
-	createElementBuffer(indices, sizeI);
 
 }
 

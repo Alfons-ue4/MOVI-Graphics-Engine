@@ -5,7 +5,7 @@
 class MVBufferManager
 {
 public:
-	void init(unsigned int indices[], float vertices[], int size, int sizeI);
+	void init(float vertices[], int size);
 	void exit();
 	void unbind();
 

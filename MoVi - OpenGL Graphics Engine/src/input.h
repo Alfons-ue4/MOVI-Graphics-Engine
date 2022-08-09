@@ -1,17 +1,34 @@
 #pragma once
-#include <GLFW/glfw3.h>
+#include "camera.h"
+#include "window.h"
 
 class MVInput
 {
 public:
-	void init() {}
-	void exit() {}
+	void init(MVWindow window, int width, int height, float sensitivity);
+	void exit();
 
-	int getKeyPress(GLFWwindow* window);
+	void processInput(bool& running, int& polygonMode, MVCamera& camera, bool capMouse);
+	void setSensitivity(float sens);
+
 private:
-	void keyHandle(int key);
+	MVWindow mWindowC;
+	GLFWwindow* mWindow;
+	MVCamera mCamera;
 
-	bool mPressingKey = false;
-	int pressedKey;
+	void processKeyboard(bool& running, int& polygonMode, MVCamera& camera);
+	void processMouse(MVCamera& camera, mouseXY mousexy);
+
+	bool mFirstMouse = true;
+	bool processingMouse = false;
+	float mLastX;
+	float mLastY;
+	float mXOffset;
+	float mYOffset;
+
+	int mWindowWidth;
+	int mWindowHeight;
+
+	float mSensitivity;
 };
 

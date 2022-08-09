@@ -2,6 +2,12 @@
 
 #include "include.h"
 
+struct mouseXY
+{
+	int xposition;
+	int yposition;
+};
+
 class MVWindow
 {
 public:
@@ -10,9 +16,13 @@ public:
 	void update();
 	bool shouldClose();
 
+	mouseXY getMouseXY();
+
 	GLFWwindow* getWindow();
 
 private:
+	mouseXY mXY;
+
 	GLFWwindow* mWindow;
 
 };

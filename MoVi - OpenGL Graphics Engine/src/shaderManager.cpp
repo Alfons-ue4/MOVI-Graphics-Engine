@@ -99,18 +99,51 @@ bool MVShaderManager::linkProgram(int program)
 	return success;
 }
 
-void MVShaderManager::setFloat(const std::string& name, float value)
+void MVShaderManager::setBool(const std::string& name, bool value) 
 {
-	glUniform1f(glGetUniformLocation(mShaderProgram, name.c_str()), value);
+    glUniform1i(glGetUniformLocation(mShaderProgram, name.c_str()), (int)value);
 }
-
 void MVShaderManager::setInt(const std::string& name, int value)
 {
 	glUniform1i(glGetUniformLocation(mShaderProgram, name.c_str()), value);
 }
-
-
-void MVShaderManager::setBool(const std::string& name, bool value) 
+void MVShaderManager::setFloat(const std::string& name, float value) 
 {
-	glUniform1i(glGetUniformLocation(mShaderProgram, name.c_str()), (int)value);
+    glUniform1f(glGetUniformLocation(mShaderProgram, name.c_str()), value);
+}
+void MVShaderManager::setVec2(const std::string& name, const glm::vec2& value) 
+{
+    glUniform2fv(glGetUniformLocation(mShaderProgram, name.c_str()), 1, &value[0]);
+}
+void MVShaderManager::setVec2(const std::string& name, float x, float y)
+{
+    glUniform2f(glGetUniformLocation(mShaderProgram, name.c_str()), x, y);
+}
+void MVShaderManager::setVec3(const std::string& name, const glm::vec3& value) 
+{
+    glUniform3fv(glGetUniformLocation(mShaderProgram, name.c_str()), 1, &value[0]);
+}
+void MVShaderManager::setVec3(const std::string& name, float x, float y, float z) 
+{
+    glUniform3f(glGetUniformLocation(mShaderProgram, name.c_str()), x, y, z);
+}
+void MVShaderManager::setVec4(const std::string& name, const glm::vec4& value) 
+{
+    glUniform4fv(glGetUniformLocation(mShaderProgram, name.c_str()), 1, &value[0]);
+}
+void MVShaderManager::setVec4(const std::string& name, float x, float y, float z, float w) 
+{
+    glUniform4f(glGetUniformLocation(mShaderProgram, name.c_str()), x, y, z, w);
+}
+void MVShaderManager::setMat2(const std::string& name, const glm::mat2& mat) 
+{
+    glUniformMatrix2fv(glGetUniformLocation(mShaderProgram, name.c_str()), 1, GL_FALSE, &mat[0][0]);
+}
+void MVShaderManager::setMat3(const std::string& name, const glm::mat3& mat) 
+{
+    glUniformMatrix3fv(glGetUniformLocation(mShaderProgram, name.c_str()), 1, GL_FALSE, &mat[0][0]);
+}
+void MVShaderManager::setMat4(const std::string& name, const glm::mat4& mat) 
+{
+    glUniformMatrix4fv(glGetUniformLocation(mShaderProgram, name.c_str()), 1, GL_FALSE, &mat[0][0]);
 }

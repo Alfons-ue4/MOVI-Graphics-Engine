@@ -1,5 +1,7 @@
 #pragma once
 
+
+
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -12,6 +14,11 @@
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
 
 #define LINFO(i) spdlog::info(i);
 #define LERROR(e) spdlog::error(e);
